@@ -24,14 +24,31 @@ model User {
   @@map("users")
 }
 
+model Month {
+  id           String   @id @default(uuid())
+  date         DateTime @default(now())
+  month_number Int
+  month_name   String
+
+  incomes Income[]
+  debts   Debt[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("months")
+}
+
 model Income {
   id          String   @id @default(uuid())
   date        DateTime
   description String
   amount      Decimal
 
-  user    User   @relation(fields: [user_id], references: [id])
-  user_id String
+  user     User   @relation(fields: [user_id], references: [id])
+  user_id  String
+  month    Month  @relation(fields: [month_id], references: [id])
+  month_id String
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -45,8 +62,10 @@ model Debt {
   description String
   amount      Decimal
 
-  user    User   @relation(fields: [user_id], references: [id])
-  user_id String
+  user     User   @relation(fields: [user_id], references: [id])
+  user_id  String
+  month    Month  @relation(fields: [month_id], references: [id])
+  month_id String
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
