@@ -7,6 +7,6 @@ export class IncomesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: Prisma.IncomeCreateInput) {
-    return this.prisma.income.create({ data });
+    return await this.prisma.income.create({ data });
   }
 }
