@@ -1,8 +1,6 @@
 import { Body, Controller, HttpException, Post } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 
-import { hash } from 'bcrypt';
-
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -12,12 +10,7 @@ export class UsersController {
   @Post('create')
   async createUser(@Body() userData: Prisma.UserCreateInput): Promise<User> {
     try {
-      const hashedPassword = await hash(userData.password, 10);
-
-      return await this.userService.create({
-        ...userData,
-        password: hashedPassword,
-      });
+      return await this.userService.create(userData);
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
