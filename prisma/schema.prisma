@@ -15,8 +15,41 @@ model User {
   email    String @unique
   password String
 
+  incomes Income[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  Debt       Debt[]
+
+  @@map("users")
+}
+
+model Income {
+  id          String   @id @default(uuid())
+  date        DateTime
+  description String
+  amount      Decimal
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
+
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  @@map("users")
+  @@map("incomes")
+}
+
+model Debt {
+  id          String   @id @default(uuid())
+  date        DateTime
+  description String
+  amount      Decimal
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("debts")
 }
